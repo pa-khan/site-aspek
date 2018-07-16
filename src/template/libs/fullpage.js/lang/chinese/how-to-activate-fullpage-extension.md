@@ -8,7 +8,7 @@
 例如：
 
 ```javascript
-var myFullpage = new fullpage('#fullpage', {
+$('#fullpage').fullPage({
     fadingEffect: true,
     fadingEffectKey: '激活密钥应在这里',
 });

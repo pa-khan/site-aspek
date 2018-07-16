@@ -86,21 +86,21 @@
 为给定选项设一个值。`optionName` 可以是`parallaxOptions`中的任意选项 (`type`, `percentage` 或 `property`).
 ```javascript
 //改变属性`type`的值
-fullpage_api.parallax.setOption('type', 'cover');
+$.fn.fullpage.parallax.setOption('type', 'cover');
 
 //改变属性`percentage`的值
-fullpage_api.parallax.setOption('percentage', '30');
+$.fn.fullpage.parallax.setOption('percentage', '30');
 ```
 ---
 
 ### init()
 启用视差效果。如果您需要在某个特定时间点动态启用该功能，可以调用这个方法。
 ```javascript
-fullpage_api.parallax.init();
+$.fn.fullpage.parallax.init();
 ```
 ---
 ### destroy()
 关闭视差效果。
 ```javascript
-fullpage_api.parallax.destroy();
+$.fn.fullpage.parallax.destroy();
 ```

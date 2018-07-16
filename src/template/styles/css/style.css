@@ -1,26 +1,43 @@
 /* Including styles files */
 /* Including fonts */
 @import url(../../libs/fancybox/dist/jquery.fancybox.css);
+@import url(../../libs/slick-carousel/slick/slick.css);
+@import url(../../libs/fullpage.js/dist/fullpage.css);
+@import url(../../libs/nouislider/distribute/nouislider.css);
 @font-face {
-  font-family: "RobotoCondensed";
-  src: url("../../fonts/RobotoCondensedLight.eot");
-  src: url("../../fonts/RobotoCondensedLight.eot?#iefix") format("embedded-opentype"), url("../../fonts/RobotoCondensedLight.woff") format("woff"), url("../../fonts/RobotoCondensedLight.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 300; }
+  font-family: 'Museo Sans Cyrl';
+  src: url("../../fonts/MuseoSansCyrl/MuseoSansCyrl-500.eot");
+  src: local("../../fonts/MuseoSansCyrl/MuseoSansCyrl-500"), url("../../fonts/MuseoSansCyrl/MuseoSansCyrl-500.eot?#iefix") format("embedded-opentype"), url("../../fonts/MuseoSansCyrl/MuseoSansCyrl-500.woff") format("woff"), url("../../fonts/MuseoSansCyrl/MuseoSansCyrl-500.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal; }
 
 @font-face {
-  font-family: "RobotoCondensed";
-  src: url("../../fonts/RobotoCondensedRegular.eot");
-  src: url("../../fonts/RobotoCondensedRegular.eot?#iefix") format("embedded-opentype"), url("../../fonts/RobotoCondensedRegular.woff") format("woff"), url("../../fonts/RobotoCondensedRegular.ttf") format("truetype");
-  font-style: normal;
-  font-weight: normal; }
+  font-family: 'Museo Sans Cyrl';
+  src: url("../../fonts/MuseoSansCyrl/MuseoSansCyrl-700.eot");
+  src: local("../../fonts/MuseoSansCyrl/MuseoSansCyrl-700"), url("../../fonts/MuseoSansCyrl/MuseoSansCyrl-700.eot?#iefix") format("embedded-opentype"), url("../../fonts/MuseoSansCyrl/MuseoSansCyrl-700.woff") format("woff"), url("../../fonts/MuseoSansCyrl/MuseoSansCyrl-700.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal; }
 
 @font-face {
-  font-family: "RobotoCondensed";
-  src: url("../../fonts/RobotoCondensedBold.eot");
-  src: url("../../fonts/RobotoCondensedBold.eot?#iefix") format("embedded-opentype"), url("../../fonts/RobotoCondensedBold.woff") format("woff"), url("../../fonts/RobotoCondensedBold.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 700; }
+  font-family: 'Museo Sans Cyrl';
+  src: url("../../fonts/MuseoSansCyrl/MuseoSansCyrl-900.eot");
+  src: local("../../fonts/MuseoSansCyrl/MuseoSansCyrl-900"), url("../../fonts/MuseoSansCyrl/MuseoSansCyrl-900.eot?#iefix") format("embedded-opentype"), url("../../fonts/MuseoSansCyrl/MuseoSansCyrl-900.woff") format("woff"), url("../../fonts/MuseoSansCyrl/MuseoSansCyrl-900.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'HelveticaNeueCyr';
+  src: url("../../fonts/HelveticaNeueCyr/HelveticaNeueCyr-Roman.eot");
+  src: local("HelveticaNeueCyr-Roman"), url("../../fonts/HelveticaNeueCyr/HelveticaNeueCyr-Roman.eot?#iefix") format("embedded-opentype"), url("../../fonts/HelveticaNeueCyr/HelveticaNeueCyr-Roman.woff") format("woff"), url("../../fonts/HelveticaNeueCyr/HelveticaNeueCyr-Roman.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'HelveticaNeueCyr';
+  src: url("../../fonts/HelveticaNeueCyr/HelveticaNeueCyr-Bold.eot");
+  src: local("HelveticaNeueCyr-Bold"), url("../../fonts/HelveticaNeueCyr/HelveticaNeueCyr-Bold.eot?#iefix") format("embedded-opentype"), url("../../fonts/HelveticaNeueCyr/HelveticaNeueCyr-Bold.woff") format("woff"), url("../../fonts/HelveticaNeueCyr/HelveticaNeueCyr-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal; }
 
 /* Grid */
 .case {
@@ -29,6 +46,15 @@
   padding-left: 15px;
   padding-right: 15px;
   margin: 0 auto; }
+
+.row, .col {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap; }
 
 .row {
   -webkit-box-orient: horizontal;
@@ -125,27 +151,15 @@
   padding: 0;
   margin: 0;
   border: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap;
   -webkit-box-sizing: border-box;
           box-sizing: border-box; }
 
 body {
   font-size: 16px;
-  font-family: "Tahoma", sans-serif;
+  font-family: "Museo Sans Cyrl", sans-serif;
   color: #000;
+  font-weight: 700;
   background: white; }
-
-body, header, main, footer {
-  width: 100%; }
-
-script, title, meta {
-  display: none; }
 
 ul {
   display: -webkit-box;
@@ -184,7 +198,7 @@ input, textarea, button {
   position: relative; }
   .input__wrap {
     font-size: 16px;
-    font-family: "Tahoma", sans-serif;
+    font-family: "Museo Sans Cyrl", sans-serif;
     background: white;
     width: 100%; }
 
@@ -192,15 +206,16 @@ input, textarea, button {
   position: relative; }
   .textarea__wrap {
     font-size: 16px;
-    font-family: "Tahoma", sans-serif;
+    font-family: "Museo Sans Cyrl", sans-serif;
     background: white;
-    width: 100%; }
+    width: 100%;
+    resize: none; }
 
 .btn {
   position: relative;
   display: inline-block;
   font-size: 0;
-  font-family: "Tahoma", sans-serif;
+  font-family: "Museo Sans Cyrl", sans-serif;
   cursor: pointer;
   text-align: center;
   -webkit-transition: .3s;
@@ -210,7 +225,7 @@ input, textarea, button {
   -webkit-transition: .3s;
   transition: .3s; }
 
-input, .btn, .slick-slide, .textarea textarea {
+input, .btn, .slick-slide, textarea {
   outline: none !important; }
 
 .tal {
@@ -228,3 +243,9 @@ input, .btn, .slick-slide, .textarea textarea {
 
 .hidden-lg {
   display: none; }
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0; }

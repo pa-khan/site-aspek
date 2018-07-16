@@ -1,7 +1,6 @@
-/**
+/*!
 * Customized version of iScroll.js 0.0.8
 * It fixes bugs affecting its integration with fullpage.js
-* @license
 */
 /*! iScroll v5.2.0 ~ (c) 2008-2016 Matteo Spinelli ~ http://cubiq.org/license */
 (function (window, document, Math) {
@@ -2124,15 +2123,9 @@ if ( typeof module != 'undefined' && module.exports ) {
 })(window, document, Math);
 
 
-/*!
-* Scrolloverflow 2.0.0 module for fullPage.js >= 3
-* https://github.com/alvarotrigo/fullPage.js
-* @license MIT licensed
-*
-* Copyright (C) 2015 alvarotrigo.com - A project by Alvaro Trigo
-*/
-(function (window, document) {
-    window.fp_scrolloverflow = (function() {
+// scrolloverflow module
+(function (window, document, $) {
+    $.fn.fp_scrolloverflow = (function() {
 
         // keeping central set of classnames and selectors
         var SCROLLABLE =            'fp-scrollable';
@@ -2182,9 +2175,9 @@ if ( typeof module != 'undefined' && module.exports ) {
         * Returns an integer representing the padding dimensions in px.
         */
         function getPaddings(element){
-            var section = fp_utils.closest(element, SECTION_SEL);
-            if(section != null){
-                return parseInt(getComputedStyle(section)['padding-bottom']) + parseInt(getComputedStyle(section)['padding-top']);
+            var section = element.closest(SECTION_SEL);
+            if(section.length){
+                return parseInt(section.css('padding-bottom')) + parseInt(section.css('padding-top'));
             }
             return 0;
         }
@@ -2199,12 +2192,12 @@ if ( typeof module != 'undefined' && module.exports ) {
 
                 if(document.readyState === 'complete'){
                     createScrollBarForAll();
-                    fullpage_api.shared.afterRenderActions();
+                    $.fn.fullpage.shared.afterRenderActions();
                 }
                 //after DOM and images are loaded
-                window.addEventListener('load', function(){
+                $(window).on('load', function(){
                     createScrollBarForAll();
-                    fullpage_api.shared.afterRenderActions();
+                    $.fn.fullpage.shared.afterRenderActions();
                 });
 
                 return self;
@@ -2214,7 +2207,7 @@ if ( typeof module != 'undefined' && module.exports ) {
             * Creates the scrollbar for the sections and slides in the site
             */
             function createScrollBarForAll(){
-                if(fp_utils.hasClass(document.body, RESPONSIVE)){
+                if($('body').hasClass(RESPONSIVE)){
                     removeResponsiveScrollOverflows();
                 }
                 else{
@@ -2230,57 +2223,54 @@ if ( typeof module != 'undefined' && module.exports ) {
             */
             function createScrollBar(element){
                 //User doesn't want scrollbar here? Sayonara baby!
-                if(fp_utils.hasClass(element, 'fp-noscroll')) return;
+                if(element.hasClass('fp-noscroll')) return;
 
                 //necessary to make `scrollHeight` work under Opera 12
-                fp_utils.css(element, {'overflow': 'hidden'});
+                element.css('overflow', 'hidden');
 
                 var scrollOverflowHandler = self.options.scrollOverflowHandler;
                 var wrap = scrollOverflowHandler.wrapContent();
-                var section = fp_utils.closest(element, SECTION_SEL); //in case element is a slide
+                var section = element.closest(SECTION_SEL); //in case element is a slide
                 var scrollable = scrollOverflowHandler.scrollable(element);
                 var contentHeight;
                 var paddings = getPaddings(section);
 
                 //if there was scroll, the contentHeight will be the one in the scrollable section
-                if(scrollable != null){
+                if(scrollable.length){
                     contentHeight = scrollOverflowHandler.scrollHeight(element);
                 }
                 else{
-                    contentHeight = element.scrollHeight - paddings;
+                    contentHeight = element.get(0).scrollHeight - paddings;
                     if(self.options.verticalCentered){
-                        contentHeight = $(TABLE_CELL_SEL, element)[0].scrollHeight - paddings;
+                        contentHeight = element.find(TABLE_CELL_SEL).get(0).scrollHeight - paddings;
                     }
                 }
 
-                var scrollHeight = fp_utils.getWindowHeight() - paddings;
+                var scrollHeight = $(window).height() - paddings;
 
                 //needs scroll?
                 if ( contentHeight > scrollHeight) {
                     //did we already have an scrollbar ? Updating it
-                    if(scrollable != null){
+                    if(scrollable.length){
                         scrollOverflowHandler.update(element, scrollHeight);
                     }
-                     //creating the scrolling
+                    //creating the scrolling
                     else{
                         if(self.options.verticalCentered){
-                            fp_utils.wrapInner($(TABLE_CELL_SEL, element)[0], wrap.scroller);
-                            fp_utils.wrapInner($(TABLE_CELL_SEL, element)[0], wrap.scrollable);
+                            element.find(TABLE_CELL_SEL).wrapInner(wrap);
                         }else{
-                            fp_utils.wrapInner(element, wrap.scroller);
-                            fp_utils.wrapInner(element, wrap.scrollable);
+                            element.wrapInner(wrap);
                         }
                         scrollOverflowHandler.create(element, scrollHeight, self.iscrollOptions);
                     }
                 }
-
                 //removing the scrolling when it is not necessary anymore
                 else{
                     scrollOverflowHandler.remove(element);
                 }
 
                 //undo
-                fp_utils.css(element, {'overflow': ''});
+                element.css('overflow', '');
             }
 
             /**
@@ -2288,15 +2278,15 @@ if ( typeof module != 'undefined' && module.exports ) {
             * or the slides within them
             */
             function forEachSectionAndSlide(callback){
-                $(SECTION_SEL).forEach(function(section){
-                    var slides = $(SLIDE_SEL, section);
+                $(SECTION_SEL).each(function(){
+                    var slides = $(this).find(SLIDE_SEL);
 
                     if(slides.length){
-                        slides.forEach(function(slide){
-                            callback(slide);
+                        slides.each(function(){
+                            callback($(this));
                         });
                     }else{
-                        callback(section);
+                        callback($(this));
                     }
                 });
             }
@@ -2307,7 +2297,7 @@ if ( typeof module != 'undefined' && module.exports ) {
             function removeResponsiveScrollOverflows(){
                 var scrollOverflowHandler = self.options.scrollOverflowHandler;
                 forEachSectionAndSlide(function(element){
-                    if(fp_utils.hasClass( fp_utils.closest(element, SECTION_SEL), AUTO_HEIGHT_RESPONSIVE)){
+                    if(element.closest(SECTION_SEL).hasClass(AUTO_HEIGHT_RESPONSIVE)){
                         scrollOverflowHandler.remove(element);
                     }
                 });
@@ -2326,7 +2316,6 @@ if ( typeof module != 'undefined' && module.exports ) {
          *
          * @type {Object}
          */
-        var $ = null;
         var iscrollHandler = {
             refreshId: null,
             iScrollInstances: [],
@@ -2342,25 +2331,23 @@ if ( typeof module != 'undefined' && module.exports ) {
             },
 
             init: function(options){
-                $ = fp_utils.$;
-
                 var isTouch = (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0) || (navigator.maxTouchPoints));
 
                 //fixing bug in iScroll with links: https://github.com/cubiq/iscroll/issues/783
                 iscrollHandler.iscrollOptions.click = isTouch; // see #2035
 
                 //extending iScroll options with the user custom ones
-                iscrollHandler.iscrollOptions = fp_utils.deepExtend(iscrollHandler.iscrollOptions, options.scrollOverflowOptions);
+                iscrollHandler.iscrollOptions = $.extend(iscrollHandler.iscrollOptions, options.scrollOverflowOptions);
 
                 return new scrollBarHandler().init(options, iscrollHandler.iscrollOptions);
             },
 
             // Enables or disables the mouse wheel for the active section or all slides in it
             toggleWheel: function(value){
-                var scrollable = $(SCROLLABLE_SEL, $(SECTION_ACTIVE_SEL)[0]);
-                scrollable.forEach(function(item){
-                    var iScrollInstance = item.fp_iscrollInstance;
-                    if(iScrollInstance != null){
+                var scrollable = $(SECTION_ACTIVE_SEL).find(SCROLLABLE_SEL);
+                scrollable.each(function(){
+                    var iScrollInstance = $(this).data('iscrollInstance');
+                    if(typeof iScrollInstance !== 'undefined' && iScrollInstance){
                         if(value){
                             iScrollInstance.wheelOn();
                         }
@@ -2397,27 +2384,27 @@ if ( typeof module != 'undefined' && module.exports ) {
              * @param  {Number} scrollHeight Current window height in pixels
              */
             create: function(element, scrollHeight, iscrollOptions) {
-                var scrollable = $(SCROLLABLE_SEL, element);
+                var scrollable = element.find(SCROLLABLE_SEL);
 
-                scrollable.forEach(function(item) {
-                    fp_utils.css(item, {'height': scrollHeight + 'px'});
-
-                    var iScrollInstance = item.fp_iscrollInstance;
-                    if (iScrollInstance != null) {
-                        iscrollHandler.iScrollInstances.forEach(function(instance){
-                            instance.destroy();
+                scrollable.height(scrollHeight);
+                scrollable.each(function() {
+                    var $this = $(this);
+                    var iScrollInstance = $this.data('iscrollInstance');
+                    if (iScrollInstance) {
+                        $.each(iscrollHandler.iScrollInstances, function(){
+                            $(this).destroy();
                         });
                     }
 
-                    iScrollInstance = new IScroll(item, iscrollOptions);
+                    iScrollInstance = new IScroll($this.get(0), iscrollOptions);
                     iscrollHandler.iScrollInstances.push(iScrollInstance);
 
-                    if(!fp_utils.hasClass(fp_utils.closest(element, SECTION_SEL), ACTIVE)){
+                    if(!element.closest(SECTION_SEL).hasClass(ACTIVE)){
                         //off by default until the section gets active
                         iScrollInstance.wheelOff();
                     }
 
-                    item.fp_iscrollInstance = iScrollInstance;
+                    $this.data('iscrollInstance', iScrollInstance);
                 });
             },
 
@@ -2430,17 +2417,17 @@ if ( typeof module != 'undefined' && module.exports ) {
              * @return {Boolean}
              */
             isScrolled: function(type, scrollable) {
-                var scroller = scrollable.fp_iscrollInstance;
+                var scroller = scrollable.data('iscrollInstance');
 
                 //no scroller?
                 if (!scroller) {
                     return true;
                 }
 
-                if (type === 'top'){
-                    return scroller.y >= 0 && !fp_utils.getScrollTop(scrollable);
+                if (type === 'top') {
+                    return scroller.y >= 0 && !scrollable.scrollTop();
                 } else if (type === 'bottom') {
-                    return (0 - scroller.y) + fp_utils.getScrollTop(scrollable) + 1 + scrollable.offsetHeight >= scrollable.scrollHeight;
+                    return (0 - scroller.y) + scrollable.scrollTop() + 1 + scrollable.innerHeight() >= scrollable[0].scrollHeight;
                 }
             },
 
@@ -2454,10 +2441,10 @@ if ( typeof module != 'undefined' && module.exports ) {
              */
             scrollable: function(activeSection){
                 // if there are landscape slides, we check if the scrolling bar is in the current one or not
-                if ($(SLIDES_WRAPPER_SEL, activeSection).length) {
-                    return $(SCROLLABLE_SEL, $(SLIDE_ACTIVE_SEL, activeSection)[0] )[0];
+                if (activeSection.find(SLIDES_WRAPPER_SEL).length) {
+                    return activeSection.find(SLIDE_ACTIVE_SEL).find(SCROLLABLE_SEL);
                 }
-                return $(SCROLLABLE_SEL, activeSection)[0];
+                return activeSection.find(SCROLLABLE_SEL);
             },
 
             /**
@@ -2469,7 +2456,7 @@ if ( typeof module != 'undefined' && module.exports ) {
              * @return {Number}
              */
             scrollHeight: function(element) {
-                return $('.fp-scroller', $(SCROLLABLE_SEL, element)[0] )[0].scrollHeight;
+                return element.find(SCROLLABLE_SEL).children().first().get(0).scrollHeight;
             },
 
             /**
@@ -2478,21 +2465,16 @@ if ( typeof module != 'undefined' && module.exports ) {
              * @param  {Object} element      jQuery object containing current section
              */
             remove: function(element) {
-                if(element == null) return;
-
-                var scrollable = $(SCROLLABLE_SEL, element)[0];
-                if (scrollable != null) {
-                    var iScrollInstance = scrollable.fp_iscrollInstance;
-                    if(iScrollInstance != null){
+                var scrollable = element.find(SCROLLABLE_SEL);
+                if (scrollable.length) {
+                    var iScrollInstance = scrollable.data('iscrollInstance');
+                    if(iScrollInstance){
                         iScrollInstance.destroy();
                     }
 
-                    scrollable.fp_iscrollInstance = null;
-
-                    //unwrapping...
-                    $('.fp-scroller', element)[0].outerHTML = $('.fp-scroller', element)[0].innerHTML;
-                    $(SCROLLABLE_SEL, element)[0].outerHTML = $(SCROLLABLE_SEL, element)[0].innerHTML;
+                    scrollable.data('iscrollInstance', null);
                 }
+                element.find(SCROLLABLE_SEL).children().first().children().first().unwrap().unwrap();
             },
 
             /**
@@ -2508,18 +2490,19 @@ if ( typeof module != 'undefined' && module.exports ) {
                 //it also comes on handy because iScroll requires the use of timeout when using `refresh`.
                 clearTimeout(iscrollHandler.refreshId);
                 iscrollHandler.refreshId = setTimeout(function(){
-                    iscrollHandler.iScrollInstances.forEach(function(instance){
-                        instance.refresh();
+                    $.each(iscrollHandler.iScrollInstances, function(){
+                        $(this).get(0).refresh();
 
                         //ugly hack that we are forced to use due to the timeout delay
                         //otherwise done on the fullpage.js reBuild function
-                        fullpage_api.silentMoveTo(fp_utils.index($(SECTION_ACTIVE_SEL)[0]) + 1);
+                        $.fn.fullpage.silentMoveTo($(SECTION_ACTIVE_SEL).index() + 1);
                     });
                 }, 150);
 
                 //updating the wrappers height
-                fp_utils.css($(SCROLLABLE_SEL, element)[0], {'height': scrollHeight + 'px'});
-                fp_utils.css($(SCROLLABLE_SEL, element)[0].parentNode, {'height': scrollHeight + getPaddings(element) + 'px'});
+                element.find(SCROLLABLE_SEL)
+                    .css('height', scrollHeight + 'px')
+                    .parent().css('height', scrollHeight + getPaddings(element) + 'px');
             },
 
             /**
@@ -2530,16 +2513,7 @@ if ( typeof module != 'undefined' && module.exports ) {
              *                         a DOM element, or jQuery object.
              */
             wrapContent: function() {
-                var scrollable = document.createElement('div');
-                scrollable.className = SCROLLABLE;
-
-                var scroller = document.createElement('div');
-                scroller.className = 'fp-scroller';
-
-                return {
-                    scrollable: scrollable,
-                    scroller: scroller
-                };
+                return '<div class="' + SCROLLABLE + '"><div class="fp-scroller"></div></div>';
             }
         };
 
@@ -2547,4 +2521,4 @@ if ( typeof module != 'undefined' && module.exports ) {
             iscrollHandler: iscrollHandler
         };
     })();
-})(window, document);
+})(window, document, jQuery);

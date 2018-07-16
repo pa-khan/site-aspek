@@ -8,7 +8,7 @@
 Например:
 
 ```javascript
-var myFullpage = new fullpage('#fullpage', {
+$('#fullpage').fullPage({
     fadingEffect: true,
     fadingEffectKey: 'ЗДЕСЬ ДОЛЖЕН БЫТЬ КЛЮЧ АКТИВАЦИИ',
 });

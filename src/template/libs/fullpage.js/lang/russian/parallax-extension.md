@@ -87,21 +87,21 @@
 Устанавливает значение для данной опции. `optionName` может быть любой из опций, доступных в `parallaxOptions`. (`type`, `percentage` или `property`).
 ```javascript
 //изменение значения для свойства `type`
-fullpage_api.parallax.setOption('type', 'cover');
+$.fn.fullpage.parallax.setOption('type', 'cover');
 
 //изменение значения для свойства `percentage`
-fullpage_api.parallax.setOption('percentage', '30');
+$.fn.fullpage.parallax.setOption('percentage', '30');
 ```
 ---
 
 ### init()
 Активирует эффект параллакс. Функция полезна, если вам необходимо активировать эффект в динамическом режиме в определённый момент.
 ```javascript
-fullpage_api.parallax.init();
+$.fn.fullpage.parallax.init();
 ```
 ---
 ### destroy()
 Отключает эффект параллакс.
 ```javascript
-fullpage_api.parallax.destroy();
+$.fn.fullpage.parallax.destroy();
 ```

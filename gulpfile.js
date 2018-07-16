@@ -46,7 +46,7 @@ gulp.task('scripts', function() {
 		'src/template/libs/jquery-mask-plugin/dist/jquery.mask.js',
 		'src/template/libs/fancybox/dist/jquery.fancybox.js',
 		'src/template/libs/slick-carousel/slick/slick.js',
-		'src/template/libs/fullpage.js/dist/fullpage.js',
+		'src/template/libs/fullpage.js/dist/jquery.fullpage.js',
 		'src/template/libs/nouislider/distribute/nouislider.js',
 		'src/template/libs/jquery-ui/jquery-ui.js'
 		])

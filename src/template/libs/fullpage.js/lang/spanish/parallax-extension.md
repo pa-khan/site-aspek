@@ -86,21 +86,21 @@ Define un valor para la opción que se le pase como parámetro. `optionName` pue
 
 ```javascript
 //cambiando el valor de la propiedad `typo`
-fullpage_api.parallax.setOption('type', 'cover');
+$.fn.fullpage.parallax.setOption('type', 'cover');
 
 //cambiando el valor de la propiedad `percentage`
-fullpage_api.parallax.setOption('percentage', '30');
+$.fn.fullpage.parallax.setOption('percentage', '30');
 ```
 ---
 
 ### init()
 Habilita el efecto parallax. Es útil cuando se necesita habilitar dicho efecto de modo dinámico en cierto momento determinado.
 ```javascript
-fullpage_api.parallax.init();
+$.fn.fullpage.parallax.init();
 ```
 ---
 ### destroy()
 Deshabilita el efecto parallax.
 ```javascript
-fullpage_api.parallax.destroy();
+$.fn.fullpage.parallax.destroy();
 ```
