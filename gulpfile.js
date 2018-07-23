@@ -47,6 +47,8 @@ gulp.task('scripts', function() {
 		'src/template/libs/fancybox/dist/jquery.fancybox.js',
 		'src/template/libs/slick-carousel/slick/slick.js',
 		'src/template/libs/fullpage.js/dist/jquery.fullpage.js',
+		'src/template/libs/fullpage.js/dist/jquery.fullpage.extensions.min.js',
+		'src/template/libs/fullpage.js/vendors/scrolloverflow.js',
 		'src/template/libs/nouislider/distribute/nouislider.js',
 		'src/template/libs/jquery-ui/jquery-ui.js'
 		])
